@@ -3,10 +3,12 @@ package org.gfg.Library_Management_Minor_Project.service;
 import org.gfg.Library_Management_Minor_Project.Repository.AuthorRepo;
 import org.gfg.Library_Management_Minor_Project.Repository.BookRepo;
 import org.gfg.Library_Management_Minor_Project.dto.BookRequest;
-import org.gfg.Library_Management_Minor_Project.model.Author;
-import org.gfg.Library_Management_Minor_Project.model.Book;
+import org.gfg.Library_Management_Minor_Project.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -27,5 +29,37 @@ public class BookService {
         return bookRepository.save(book);
 
 
+    }
+
+    // for one value
+    public List<Book> filter(BookFilterType bookFilterType, Operator operator, String value) {
+        switch (bookFilterType){
+            case BOOK_TITLE :
+                switch (operator){
+                    case EQUALS :
+                        return bookRepository.findByTitle(value);
+                    case LIKE:
+                        return bookRepository.findByTitleContaining(value);
+                    default:
+                        new ArrayList<Book>();
+                }
+            case BOOK_TYPE:
+                switch (operator) {
+                    case EQUALS:
+                        return bookRepository.findByBookType(BookType.valueOf(value));
+
+                }
+            case BOOK_NO:
+                switch (operator) {
+                    case EQUALS:
+                        return bookRepository.findByBookNo(value);
+                }
+            default: new ArrayList<Book>();
+        }
+        return new ArrayList<>();
+    }
+
+    public void updateBookData(Book bookFromDB) {
+        bookRepository.save(bookFromDB);
     }
 }

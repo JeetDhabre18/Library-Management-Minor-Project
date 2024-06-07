@@ -22,6 +22,8 @@ public class Txn extends TimeStamp {
     @JoinColumn
     private User user;
 
+    private int SettlementAmount;
+
     @ManyToOne
     @JoinColumn
     private  Book book;

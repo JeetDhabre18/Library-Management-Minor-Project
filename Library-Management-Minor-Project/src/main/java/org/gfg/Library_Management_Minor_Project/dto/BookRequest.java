@@ -41,7 +41,7 @@ public class BookRequest {
     public Book toBook() {
         return Book.builder().
                 title(this.title).
-                BookNo(this.bookNo).
+                bookNo(this.bookNo).
                 Securityamt(this.securityAmount).
                 bookType(this.type).
                 build();

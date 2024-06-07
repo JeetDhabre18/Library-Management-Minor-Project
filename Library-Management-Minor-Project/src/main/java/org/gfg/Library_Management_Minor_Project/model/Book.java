@@ -22,7 +22,7 @@ public class Book extends TimeStamp {
 
     //identifier
     @Column(length=20,unique=true)
-    private String BookNo;
+    private String bookNo;
 
     @Enumerated(value= EnumType.STRING)
     private BookType bookType;

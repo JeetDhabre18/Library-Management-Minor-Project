@@ -4,10 +4,9 @@ import org.gfg.Library_Management_Minor_Project.dto.UserRequest;
 import org.gfg.Library_Management_Minor_Project.model.User;
 import org.gfg.Library_Management_Minor_Project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -25,4 +24,11 @@ public class UserController {
     public User addAdmin(@RequestBody UserRequest userRequest) {
          return null;
     }
+
+//    @GetMapping("/filter")
+//    public List<User> filter(@RequestParam("filterBy") String filterBy,
+//                             @RequestParam("operator") String operator,
+//                             @RequestParam ("value") String value) {
+//        return userService.filter(filterBy,operator,value);
+//    }
 }
