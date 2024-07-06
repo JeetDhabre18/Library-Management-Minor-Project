@@ -1,4 +1,5 @@
 package org.gfg.Library_Management_Minor_Project.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,7 @@ public class User extends TimeStamp {
     private List<Book> bookList;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties(value={"user"})
     private List<Txn>  txnlist;
 
     private  String temp;

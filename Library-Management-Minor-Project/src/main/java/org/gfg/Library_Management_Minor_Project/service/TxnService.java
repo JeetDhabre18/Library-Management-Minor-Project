@@ -101,7 +101,7 @@ public class TxnService {
           return fine;
     }
 
-    private int calculateFine(Txn txn,int securityamt) {
+    public int calculateFine(Txn txn,int securityamt) {
          long issueDate=txn.getCreatedOn().getTime();
          long returnDate=System.currentTimeMillis();
          long timeDiff=returnDate - issueDate;

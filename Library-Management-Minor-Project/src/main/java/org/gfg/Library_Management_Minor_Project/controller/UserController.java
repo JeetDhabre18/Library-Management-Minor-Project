@@ -25,10 +25,10 @@ public class UserController {
          return null;
     }
 
-//    @GetMapping("/filter")
-//    public List<User> filter(@RequestParam("filterBy") String filterBy,
-//                             @RequestParam("operator") String operator,
-//                             @RequestParam ("value") String value) {
-//        return userService.filter(filterBy,operator,value);
-//    }
+    @GetMapping("/filter")
+    public List<User> filter(@RequestParam("filterBy") String filterBy,
+                             @RequestParam("operator") String operator,
+                             @RequestParam ("value") String value) {
+        return userService.filter(filterBy,operator,value);
+   }
 }
