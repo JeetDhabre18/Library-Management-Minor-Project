@@ -1,5 +1,6 @@
 package org.gfg.Library_Management_Minor_Project.controller;
 
+import jakarta.validation.Valid;
 import org.gfg.Library_Management_Minor_Project.dto.UserRequest;
 import org.gfg.Library_Management_Minor_Project.model.User;
 import org.gfg.Library_Management_Minor_Project.service.UserService;
@@ -16,13 +17,18 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/addStudent")
-    public User addStudent(@RequestBody UserRequest userRequest) {
-         return userService.addStudent(userRequest);
+    public User addStudent(@RequestBody @Valid  UserRequest userRequest) {
+        return userService.addStudent(userRequest);
     }
 
     @PostMapping("/addAdmin")
-    public User addAdmin(@RequestBody UserRequest userRequest) {
-         return null;
+    public User addAdmin(@RequestBody @Valid  UserRequest userRequest) {
+        return userService.addAdmin(userRequest);
+    }
+
+    @GetMapping("/getStudent")
+    public User getStudent(@RequestParam int id) {
+            return null;
     }
 
     @GetMapping("/filter")

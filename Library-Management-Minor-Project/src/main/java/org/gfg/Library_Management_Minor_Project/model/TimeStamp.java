@@ -13,9 +13,9 @@ import java.util.Date;
 public class TimeStamp {
     @CreationTimestamp
     //@Column(name = "created_on", updatable = false)
-    private Date createdOn;
+    public Date createdOn;
 
     @UpdateTimestamp
-    private  Date updatedOn;
+    public Date updatedOn;
 
 }

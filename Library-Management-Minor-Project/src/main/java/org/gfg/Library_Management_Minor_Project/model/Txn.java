@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -14,8 +15,7 @@ import java.util.Date;
 @ToString
 @Builder
 @Entity
-public class Txn {
-        //extends TimeStamp {
+public class Txn extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,11 @@ public class Txn {
 
     private String txnId ;
 
-    @CreationTimestamp
-    private Date createdOn;
-
-    @UpdateTimestamp
-    private Date updatedOn;
+//    @CreationTimestamp
+//    //private Date createdOn;
+//
+//    @UpdateTimestamp
+//    private Date updatedOn;
 
 
     @ManyToOne

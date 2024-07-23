@@ -5,6 +5,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.gfg.Library_Management_Minor_Project.Exception.UserException;
+import org.gfg.Library_Management_Minor_Project.Repository.UserCacheRepository;
 import org.gfg.Library_Management_Minor_Project.Repository.UserRepo;
 import org.gfg.Library_Management_Minor_Project.dto.UserRequest;
 import org.gfg.Library_Management_Minor_Project.model.Operator;
@@ -12,13 +14,23 @@ import org.gfg.Library_Management_Minor_Project.model.User;
 import org.gfg.Library_Management_Minor_Project.model.UserFilterType;
 import org.gfg.Library_Management_Minor_Project.model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     public static  final Log logger= LogFactory.getLog("UserService.class");
+
+
+    @Autowired
+    private UserCacheRepository cacheRepository;
 
     @Autowired
     private UserRepo userRepository;
@@ -27,8 +39,19 @@ public class UserService {
     @PersistenceContext
     private EntityManager em;
 
+    @Value("${student.authority}")
+    private String studentAuthority;
+
+    @Value("${admin.authority}")
+    private String adminAuthority;
+
+    @Autowired
+    private PasswordEncoder encoder;
+
     public User addStudent(UserRequest userRequest) {
         User user = userRequest.toUser();
+        user.setAuthorities(studentAuthority);
+        user.setPassword(encoder.encode(userRequest.getPassword()));
         user.setUserType(UserType.STUDENT);
         return userRepository.save(user);
 
@@ -60,5 +83,34 @@ public class UserService {
 
     public User getStudentByPhoneNo(String userPhoneNo) {
         return userRepository.findByPhoneNoAndUserType(userPhoneNo,UserType.STUDENT);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        //load this user from redis first if present then get the data
+
+        // if not present in redis i want to go to db and then add to redis
+        User user = cacheRepository.getUser(email);
+        if(user != null){
+            return user;
+        }
+        user =  userRepository.findByEmail(email);
+        if(user==null){
+            try {
+                throw new UserException("the user does not belong to this library");
+            } catch (UserException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        cacheRepository.setUser(email,user);
+        return user;
+    }
+
+    public User addAdmin(UserRequest userRequest) {
+        User user = userRequest.toUser();
+        user.setAuthorities(adminAuthority);
+        user.setPassword(encoder.encode(userRequest.getPassword()));
+        user.setUserType(UserType.ADMIN);
+        return userRepository.save(user);
     }
 }

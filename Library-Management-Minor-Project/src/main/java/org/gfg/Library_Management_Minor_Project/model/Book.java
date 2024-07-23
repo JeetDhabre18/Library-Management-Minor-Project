@@ -2,6 +2,7 @@ package org.gfg.Library_Management_Minor_Project.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -11,7 +12,7 @@ import java.util.List;
 @ToString
 @Builder
 @Entity
-public class Book extends TimeStamp {
+public class Book extends TimeStamp  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

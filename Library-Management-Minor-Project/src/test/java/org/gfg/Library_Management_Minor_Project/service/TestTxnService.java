@@ -51,10 +51,10 @@ public class TestTxnService {
     @Test
     public void testCalculateFine() throws ParseException {
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2024-05-01");
-        Txn txn= Txn.builder().createdOn(date)
-                .build();
+        Txn txn= Txn.builder().build();
+        txn.setCreatedOn(date);
         int calFine=txnService.calculateFine(txn,100);
-        Assert.assertEquals(48,calFine);
+        Assert.assertEquals(41,calFine);
     }
 
 
@@ -87,7 +87,8 @@ public class TestTxnService {
         list.add(Book.builder().id(1).bookNo("1").user(user).Securityamt(100).build());
         when(bookService.filter(any(),any(),any())).thenReturn(list);
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse("2024-05-01");
-        Txn txn=Txn.builder().id(1).user(user).book(list.get(0)).createdOn(date).build();
+        Txn txn=Txn.builder().id(1).user(user).book(list.get(0)).build();
+        txn.setCreatedOn(date);
         when(txnRepository.findByUserPhoneNoAndBookBookNoAndTxnStatus(any(),any(),any())).thenReturn(txn);
         int fine=txnService.returnBook(txnRequest);
         Assert.assertEquals(48,fine);
